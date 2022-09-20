@@ -26,7 +26,7 @@ ul {
     justify-content: center;
     align-items: center;
     width: 45%;
-    margin: 25px 31.5%;
+    margin: 25px 28.5%;
 }
 
 li>button {
@@ -56,14 +56,17 @@ span {
 }
 
 .palavra {
-    display: flex;
-    justify-content: center;
+    
+   display: flex;
+  justify-content: center;
+  margin-right:4.5%;
 }
 
 .palavra input{
-    width:50%;
+    width:47%;
     height: 25px;
     border-color:chocolate;
+
 }
 .palavra button {
     display: flex;
@@ -77,6 +80,7 @@ span {
     color: white;
     margin-left: 5px;
     width: 50px;
+    cursor: pointer;
 }
 
 .palavra-button button {
@@ -90,4 +94,5 @@ span {
     font-size: 15px;
     background-color: chocolate;
     padding:5px;
+    cursor: pointer;
 }
