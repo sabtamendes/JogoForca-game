@@ -6,10 +6,12 @@ export default function App() {
   return (
     <>
       <h1>Hangman Game</h1>
-      <img src="./Assets/imagem0.png" />
+      <span className="palavra-button"><button>Escolher Palavra</button></span>
+        <img src="./Assets/imagem0.png" /> 
       <ul>
         <li>{alfabeto.map(item => <button><p>{item}</p></button>)}</li>
       </ul>
+      <div className="palavra"> <span>Já sei a palavra!</span> <input type="text"></input> <button>Chutar</button></div>
     </>
   )
 }

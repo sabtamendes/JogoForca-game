@@ -9,14 +9,14 @@ h1 {
     justify-content: center;
     align-items: center;
     padding: 25px;
-    color: rgba(248, 196, 10, 0.907);
+    color: chocolate;
     font-family: 'Holtwood One SC', serif;
     font-size: 70px;
     text-shadow: black 0.1em 0.1em 0.2em;
 }
 
 img {
-    margin:30px 26%;
+    margin: 30px 26%;
     width: 150px;
     height: 200px;
 }
@@ -25,24 +25,69 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    width:45%;
-    margin:20px 29%;
+    width: 45%;
+    margin: 25px 31.5%;
 }
 
-button {
+li>button {
     /* display: flex;
     justify-content: center;
     align-items: center; */
     width: 30px;
     height: 35px;
-    background-color: rgba(115, 112, 112, 0.475);
+    background-color: rgba(63, 60, 60, 0.604);
     border: none;
     border-radius: 5px;
     margin: 10px;
+    cursor: pointer;
 }
 
 button>p {
     color: rgba(233, 226, 42, 0.756);
     font-size: 14px;
     font-weight: bold;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+span {
+    color: rgba(248, 196, 10, 0.907);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 5px;
+}
+
+.palavra {
+    display: flex;
+    justify-content: center;
+}
+
+.palavra input{
+    width:50%;
+    height: 25px;
+    border-color:chocolate;
+}
+.palavra button {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: chocolate;
+    border-color:chocolate;
+    padding: 5px;
+    border-radius: 2px;
+    color: white;
+    margin-left: 5px;
+    width: 50px;
+}
+
+.palavra-button button {
+    display: flex;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    color:white;
+    margin-top: 20px;
+    margin-left: 65%;
+    font-size: 15px;
+    background-color: chocolate;
+    padding:5px;
 }
