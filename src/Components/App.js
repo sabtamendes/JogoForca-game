@@ -14,11 +14,11 @@ export default function App() {
     const [habilitarInput, setHabilitarInput] = React.useState("disabled");
     const [habilitarLetras, setHabilitarLetras] = React.useState([...alfabeto]);
     const [acionarLetras, setAcionarLetras] = React.useState("disabled");
-    // const [finalizada, setFinalizada] = React.useState([]);
+    const [botaoPressionado, setBotaoPressionado] = React.useState([]);
     const [imagem, setImagem] = React.useState("");
     const [underline, setUnderline] = React.useState("");
     const [caractere, setCaractere] = React.useState("");
-    const [palavra, setPalavra] = React.useState([...Words])
+    const [letra, setLetra] = React.useState([])
     const [palavrasCorretas, setPalavrasCorretas] = React.useState([]);
     const [chute, setChute] = React.useState([])
 
@@ -40,7 +40,7 @@ export default function App() {
                 console.log(caracter.split('').join(''))
                 setUnderline(caracter.split('').join(''));
                 setCaractere(caracter)
-                setPalavra(caracter);
+
             }
             return string;
         }
@@ -50,36 +50,41 @@ export default function App() {
         return Math.random() - 0.5;
     }
 
-    return (
-        <>
-            <h1>Hangman Game</h1>
+    function pressionarBotao(item) {
+console.log(item)
+        setChute([...chute,item]);
+    }
 
-            <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>
+return (
+    <>
+        <h1>Hangman Game</h1>
 
-            {imagem ? <img src={imagem} alt="texto alternativo" /> : " "}
+        <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>
 
-            {underline.split('').map((letra, i) => {
-                return (
-                    <span className="letrasNaTela" key={i}>{chute.includes(letra) ? letra : ''}</span>)
-            })}
+        {imagem ? <img src={imagem} alt="texto alternativo" /> : " "}
 
-            <ul>
-                <li>
-                    {acionarLetras === "disabled"
-                        ? habilitarLetras.map((item, index) =>
-                            <button type="button" key={index} className="colorDisabled" disabled><p>{item}</p></button>)
-                        : habilitarLetras.map((item, index) =>
-                            <button type="button" key={index} className="colorEnabled" enabled><p>{item}</p></button>)
-                    }
-                </li>
+        {underline.split('').map((letra, i) => {
+            return (
+                <span className="letrasNaTela" key={i}>{chute.includes(letra) ? letra : ''}</span>)
+        })}
 
-            </ul>
-            <div className="palavra"> <span>Já sei a palavra!</span>
-                {
-                    habilitarInput === "disabled"
-                        ? <input type="text" className="Disabled" disabled></input>
-                        : <input type="text" className="Enabled" enabled></input>
-                } <button>Chutar</button></div>
-        </>
-    )
+        <ul>
+            <li>
+                {acionarLetras === "disabled"
+                    ? habilitarLetras.map((item, index) =>
+                        <button type="button" key={index} className="colorDisabled" disabled><p>{item}</p></button>)
+                    : habilitarLetras.map((item, index) =>
+                        <button onClick={() => pressionarBotao(item)} type="button" key={index} className={chute.includes(item) ? "colorDisabled" : "colorEnabled"} enabled><p>{item}</p></button>)
+                }
+            </li>
+
+        </ul>
+        <div className="palavra"> <span>Já sei a palavra!</span>
+            {
+                habilitarInput === "disabled"
+                    ? <input type="text" className="Disabled" disabled></input>
+                    : <input type="text" className="Enabled" enabled></input>
+            } <button>Chutar</button></div>
+    </>
+)
 }
