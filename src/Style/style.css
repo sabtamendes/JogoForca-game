@@ -16,7 +16,7 @@ h1 {
 }
 
 img {
-    margin: 30px 26%;
+    margin: auto 26%;
     width: 150px;
     height: 200px;
 }
@@ -26,60 +26,53 @@ ul {
     justify-content: center;
     align-items: center;
     width: 45%;
-    margin: 25px 28.5%;
-}
-
-li>button {
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-    width: 30px;
-    height: 35px;
-    background-color: rgba(63, 60, 60, 0.604);
-    border: none;
-    border-radius: 5px;
-    margin: 10px;
-    cursor: pointer;
+    position: fixed;
+    top: 46%;
+    left: 28.5%;
+    bottom: 0;
 }
 
 button>p {
-    color: rgba(233, 226, 42, 0.756);
     font-size: 14px;
     font-weight: bold;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-span {
-    color: rgba(248, 196, 10, 0.907);
+.palavra span {
+    color: chocolate;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 5px;
+    text-shadow: rgb(8, 8, 8) 0.1em 0.1em 0.2em;
+    font-weight: 600;
 }
 
 .palavra {
-    
-   display: flex;
-  justify-content: center;
-  margin-right:4.5%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 39vw;
+    left: 16%;
+    bottom: 0;
 }
 
-.palavra input{
-    width:47%;
+.palavra input {
+    width: 50vw;
     height: 25px;
-    border-color:chocolate;
-
 }
+
 .palavra button {
     display: flex;
     align-items: center;
     text-align: center;
     justify-content: center;
     background-color: chocolate;
-    border-color:chocolate;
+    border-color: chocolate;
     padding: 5px;
     border-radius: 2px;
     color: white;
     margin-left: 5px;
     width: 50px;
+    height: 31.5px;
     cursor: pointer;
 }
 
@@ -88,11 +81,59 @@ span {
     justify-content: center;
     border: none;
     border-radius: 4px;
-    color:white;
+    color: white;
     margin-top: 20px;
     margin-left: 65%;
     font-size: 15px;
     background-color: chocolate;
-    padding:5px;
+    padding: 5px;
     cursor: pointer;
+}
+
+li>button.colorEnabled {
+    width: 30px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+    border-color: chocolate;
+    background-color: chocolate;
+    cursor: pointer;
+    color: white;
+}
+
+li>button.colorDisabled {
+    width: 30px;
+    height: 35px;
+    border: none;
+    background-color: rgba(63, 60, 60, 0.604);
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.escondido {
+    visibility: hidden;
+}
+
+.Disabled {
+    border-color: black;
+}
+
+.Enabled {
+    border-color: chocolate;
+}
+
+.letrasNaTela{
+    width: 50px;
+    text-align: center;
+    border-bottom: 2px solid chocolate;
+    color: white;
+    padding: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.letrasNaTela > span{
+    font-size: medium;
+    font-weight: 600;
 }
