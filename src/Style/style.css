@@ -137,3 +137,16 @@ li>button.colorDisabled {
     font-size: medium;
     font-weight: 600;
 }
+.reiniciarButton{
+    display: flex;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    margin-top: 20px;
+    margin-left: 65%;
+    font-size: 15px;
+    background-color: rgb(41, 80, 157);
+    padding: 5px;
+    cursor: pointer;
+}

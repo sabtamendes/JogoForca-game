@@ -21,7 +21,8 @@ export default function App() {
     const [letraErrada, setLetraErrada] = React.useState(0);
     const [chute, setChute] = React.useState([...Words]);
     const [imagem, setImagem] = React.useState("");
-   
+    const [respostaInput, setRespostaInput] = React.useState('');
+    const [botaoReiniciar, setBotaoReiniciar] = React.useState(false)
     Words.sort(embararalhar);
 
     function acionado() {
@@ -52,21 +53,37 @@ export default function App() {
         });
 
         if (!letra.includes(item)) {
-            setLetraErrada(letraErrada + 1)
-            console.log(item, 'entrou')
+            setLetraErrada(letraErrada + 1);
         }
 
-        if (letraErrada >= 6) {
-            alert("fim de jogo")
+
+
+        for (let i = 0; i < Words.length; i++) {
+            let string = Words[i].toString().split(' ');
+            for (let i = 0; i < string.length; i++) {
+                let caracter = string[i].toLocaleUpperCase()
+                if (letraErrada >= 6) {
+                    alert(`A Palavra Secreta é ${caracter}! \nNão foi dessa vez 🥹`)
+                    setBotaoReiniciar(true)
+                    setLetra('');
+                }
+            }
+            return string;
         }
+
     }
 
+    function inserirPalavra() {
+        console.log('fui clicado')
+        const palavra = respostaInput;
+        setRespostaInput(palavra);
+    }
 
     return (
         <>
             <h1>Hangman Game</h1>
 
-            <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>
+            {botaoReiniciar ? <button onClick={() => window.location.reload(false)} className="reiniciarButton">Jogar Novamente</button> : <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>}
 
             {imagem ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : " "}
 
@@ -74,6 +91,7 @@ export default function App() {
                 return (
                     <span className="letrasNaTela" key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span>)
             })}
+
 
             <ul>
                 <li>
@@ -90,8 +108,8 @@ export default function App() {
                 {
                     habilitarInput === "disabled"
                         ? <input type="text" className="Disabled" disabled></input>
-                        : <input type="text" className="Enabled" enabled></input>
-                } <button>Chutar</button></div>
+                        : <input onChange={(e) => setRespostaInput(e.target.value)} type="text" className="Enabled" enabled></input>
+                } <button onClick={inserirPalavra}>Chutar</button></div>
         </>
     )
 }
