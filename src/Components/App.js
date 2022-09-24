@@ -35,6 +35,7 @@ export default function App() {
             let string = Words[i].toString().split(' ');
             for (let i = 0; i < string.length; i++) {
                 let caracter = string[i];
+                console.log(caracter)
                 setLetra(caracter.split('').join(''));
             }
             return string;
@@ -56,8 +57,6 @@ export default function App() {
             setLetraErrada(letraErrada + 1);
         }
 
-
-
         for (let i = 0; i < Words.length; i++) {
             let string = Words[i].toString().split(' ');
             for (let i = 0; i < string.length; i++) {
@@ -65,7 +64,6 @@ export default function App() {
                 if (letraErrada >= 6) {
                     alert(`A Palavra Secreta é ${caracter}! \nNão foi dessa vez 🥹`)
                     setBotaoReiniciar(true)
-                    setLetra('');
                 }
             }
             return string;
@@ -74,9 +72,9 @@ export default function App() {
     }
 
     function inserirPalavra() {
-        console.log('fui clicado')
-        const palavra = respostaInput;
-        setRespostaInput(palavra);
+        const palavra = [...respostaInput.split('').join(''), setRespostaInput];
+        setChute(palavra);
+        setRespostaInput('')
     }
 
     return (
@@ -108,7 +106,7 @@ export default function App() {
                 {
                     habilitarInput === "disabled"
                         ? <input type="text" className="Disabled" disabled></input>
-                        : <input onChange={(e) => setRespostaInput(e.target.value)} type="text" className="Enabled" enabled></input>
+                        : <input onChange={(e) => setRespostaInput(e.target.value)} value={respostaInput} type="text" className="Enabled" enabled></input>
                 } <button onClick={inserirPalavra}>Chutar</button></div>
         </>
     )
