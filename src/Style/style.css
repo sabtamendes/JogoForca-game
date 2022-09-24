@@ -125,23 +125,36 @@ li>button.colorDisabled {
 }
 
 .letrasNaTela{
-    width: 50px;
+    width: 20px;
     text-align: center;
     border-bottom: 2px solid chocolate;
     color: white;
+    padding: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 25%;
+}
+.letrasNaTelaVerde{
+    width: 20px;
+    text-align: center;
+    font-size: medium;
+    font-weight: 600;
+    color:rgb(0, 252, 0);
+    border-bottom: 2px solid chocolate;
     padding: 20px;
     margin-left: 5px;
     margin-right: 5px;
 }
-.letrasNaTelaVerde > span{
-    font-size: medium;
-    font-weight: 600;
-    color:rgb(0, 252, 0);
-}
-.letrasNaTelaVermelho > span{
+.letrasNaTelaVermelho{
+    width: 20px;
+    text-align: center;
     font-size: medium;
     font-weight: 600;
     color:rgb(245, 26, 26);
+    border-bottom: 2px solid chocolate;
+    padding: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 .reiniciarButton{
     display: flex;
@@ -155,4 +168,5 @@ li>button.colorDisabled {
     background-color: rgb(41, 80, 157);
     padding: 5px;
     cursor: pointer;
+    margin-bottom: 13%;
 }

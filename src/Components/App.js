@@ -8,35 +8,37 @@ import imagem3 from "../assets/3.png";
 import imagem4 from "../assets/4.png";
 import imagem5 from "../assets/5.png";
 import imagem6 from "../assets/6.png";
+import gameover from "../assets/gameover.png";
 
 export default function App() {
 
-    const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    const imagens = [imagem0, imagem1, imagem2, imagem3, imagem4, imagem5, imagem6];
+    const alfabeto =
+        ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    const imagens = [imagem0, imagem1, imagem2, imagem3, imagem4, imagem5, imagem6, gameover];
 
     const [habilitarInput, setHabilitarInput] = React.useState("disabled");
     const [acionarLetras, setAcionarLetras] = React.useState("disabled");
     const [habilitarLetras, setHabilitarLetras] = React.useState([...alfabeto]);
-    const [letra, setLetra] = React.useState("");
+    const [palavra, setPalavra] = React.useState("");
     const [letraErrada, setLetraErrada] = React.useState(0);
     const [chute, setChute] = React.useState([...Words]);
-    const [imagem, setImagem] = React.useState("");
+    const [imagem, setImagem] = React.useState(imagens);
     const [respostaInput, setRespostaInput] = React.useState('');
-    const [botaoReiniciar, setBotaoReiniciar] = React.useState(false)
+    const [botaoReiniciar, setBotaoReiniciar] = React.useState(false);
     Words.sort(embararalhar);
 
     function acionado() {
-        setHabilitarInput("enabled");
         setHabilitarLetras(habilitarLetras);
-        setImagem(imagem0);
+        setHabilitarInput("enabled");
         setAcionarLetras("enabled");
-
+        setImagem(imagens[0]);
+        
         for (let i = 0; i < Words.length; i++) {
             let string = Words[i].toString().split(' ');
             for (let i = 0; i < string.length; i++) {
                 let caracter = string[i];
                 console.log(caracter)
-                setLetra(caracter.split('').join(''));
+                setPalavra(caracter.split('').join(''));
             }
             return string;
         }
@@ -53,42 +55,56 @@ export default function App() {
             return setChute([...chute, item, valido]);
         });
 
-        if (!letra.includes(item)) {
+        if (!palavra.includes(item)) {
             setLetraErrada(letraErrada + 1);
-            // setHabilitarInput("disabled");
-            // setAcionarLetras("disabled");
+            console.log('contando + 1')
         }
 
-        for (let i = 0; i < Words.length; i++) {
-            let string = Words[i].toString().split(' ');
-            for (let i = 0; i < string.length; i++) {
-                let caracter = string[i].toLocaleUpperCase()
-                if (letraErrada >= 6) {
-                    alert(`A Palavra Secreta é ${caracter}! \nNão foi dessa vez 🥹`)
-                    setBotaoReiniciar(true);
-                    setHabilitarInput("disabled");
-                    setAcionarLetras("disabled");
-                    setLetraErrada(letraErrada + 6);
-                    
-                   
-                }
-            }
-            return string;
+        //BOTOES
+        if (letraErrada >= 6) {
+            // alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
+            setBotaoReiniciar(true);
+            setHabilitarInput("disabled");
+            setAcionarLetras("disabled");
+            setLetraErrada(chute + 6);
+            setChute(palavra)
+            console.log('entrou letra errada')
         }
-
     }
+    console.log('saiu')
 
     function inserirPalavra() {
-        const palavra = [...respostaInput.split('').join(''), setRespostaInput];
-        setChute(palavra);
+        //const palavra = [...respostaInput.split('').join(''), setRespostaInput];
+        //setChute(palavra);
+        console.log('entrou aqui')
+        // setHabilitarInput("disabled");
+        // setAcionarLetras("disabled");
         setRespostaInput('');
 
-       
-        if(!respostaInput.includes(palavra)){
-            setLetraErrada(letraErrada + 6);
+        //input palavra INCORRETA NAO ESTÁ RENDERIZANDO A PALAVRA
+        if (!respostaInput.includes(palavra)) {
+            setChute(palavra)
+            setLetraErrada(palavra + 6);
+            console.log('palavra errada INPUT entrou')
+            alert("PERDEU INPUT");
+            setBotaoReiniciar(true);
+            setHabilitarInput("disabled");
+            setAcionarLetras("disabled");
+            //
+        }
+        //input palavra CORRETA
+        if (respostaInput.includes(palavra)) {
+            setLetraErrada(palavra);
+            alert("✨ Você GANHOU! ✨ INPUT")
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
             setBotaoReiniciar(true)
+            setChute(palavra)
+            console.log('entrou input palavra certa')
+        }
+        //RENDERIZAR RESPOSTA SE CORRETA
+        if (respostaInput.includes(palavra)) {
+            setChute(respostaInput)
         }
     }
 
@@ -98,13 +114,13 @@ export default function App() {
 
             {botaoReiniciar ? <button onClick={() => window.location.reload(false)} className="reiniciarButton">Jogar Novamente</button> : <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>}
 
-            {imagem ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : " "}
+            {imagem ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : ''}
 
-            {letra.split('').map((letra, i) => {
+
+            {palavra.split('').map((letra, i) => {
                 return (
                     <span className="letrasNaTela" key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span>)
             })}
-
 
             <ul>
                 <li>
