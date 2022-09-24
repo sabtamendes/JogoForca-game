@@ -22,7 +22,7 @@ export default function App() {
     const [palavra, setPalavra] = React.useState("");
     const [letraErrada, setLetraErrada] = React.useState(0);
     const [chute, setChute] = React.useState([...Words]);
-    const [imagem, setImagem] = React.useState(imagens);
+    const [imagem, setImagem] = React.useState('');
     const [respostaInput, setRespostaInput] = React.useState('');
     const [botaoReiniciar, setBotaoReiniciar] = React.useState(false);
     Words.sort(embararalhar);
@@ -32,13 +32,13 @@ export default function App() {
         setHabilitarInput("enabled");
         setAcionarLetras("enabled");
         setImagem(imagens[0]);
-        
+
         for (let i = 0; i < Words.length; i++) {
             let string = Words[i].toString().split(' ');
             for (let i = 0; i < string.length; i++) {
                 let caracter = string[i];
                 console.log(caracter)
-                setPalavra(caracter.split('').join(''));
+                setPalavra(caracter.split(/ +/).join('').normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
             }
             return string;
         }
@@ -48,13 +48,8 @@ export default function App() {
         return Math.random() - 0.5;
     }
 
-    function pressionarBotao(item, index) {
-        let regex = /^[a-z]+$/i;
-        Words.forEach(palavra => {
-            let valido = palavra.normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(/ +/).every(parte => regex.test(parte));
-            return setChute([...chute, item, valido]);
-        });
-
+    function pressionarBotao(item) {
+      
         if (!palavra.includes(item)) {
             setLetraErrada(letraErrada + 1);
             console.log('contando + 1')
@@ -62,14 +57,16 @@ export default function App() {
 
         //BOTOES
         if (letraErrada >= 6) {
-            // alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
+           alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
             setBotaoReiniciar(true);
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
-            setLetraErrada(chute + 6);
+            setLetraErrada(letraErrada + 6);
             setChute(palavra)
-            console.log('entrou letra errada')
+            console.log('entrou letra errada');
+            setImagem(letraErrada + 6)
         }
+        
     }
     console.log('saiu')
 
@@ -84,12 +81,13 @@ export default function App() {
         //input palavra INCORRETA NAO ESTÁ RENDERIZANDO A PALAVRA
         if (!respostaInput.includes(palavra)) {
             setChute(palavra)
-            setLetraErrada(palavra + 6);
+            setLetraErrada(letraErrada + 6);
             console.log('palavra errada INPUT entrou')
             alert("PERDEU INPUT");
             setBotaoReiniciar(true);
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
+            setImagem(letraErrada + 6)
             //
         }
         //input palavra CORRETA
@@ -105,6 +103,10 @@ export default function App() {
         //RENDERIZAR RESPOSTA SE CORRETA
         if (respostaInput.includes(palavra)) {
             setChute(respostaInput)
+            setImagem(imagens[7])
+        }
+        if(palavra.includes(chute)){
+            alert('voce ganhou')
         }
     }
 
@@ -114,12 +116,13 @@ export default function App() {
 
             {botaoReiniciar ? <button onClick={() => window.location.reload(false)} className="reiniciarButton">Jogar Novamente</button> : <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>}
 
-            {imagem ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : ''}
+            {imagem + 6 ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : '' }
 
 
             {palavra.split('').map((letra, i) => {
                 return (
-                    <span className="letrasNaTela" key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span>)
+                    <div className="letrasNaTela">
+                    <span  key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
             })}
 
             <ul>
