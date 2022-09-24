@@ -133,9 +133,15 @@ li>button.colorDisabled {
     margin-left: 5px;
     margin-right: 5px;
 }
-.letrasNaTela > span{
+.letrasNaTelaVerde > span{
     font-size: medium;
     font-weight: 600;
+    color:rgb(0, 252, 0);
+}
+.letrasNaTelaVermelho > span{
+    font-size: medium;
+    font-weight: 600;
+    color:rgb(245, 26, 26);
 }
 .reiniciarButton{
     display: flex;

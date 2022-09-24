@@ -55,6 +55,8 @@ export default function App() {
 
         if (!letra.includes(item)) {
             setLetraErrada(letraErrada + 1);
+            // setHabilitarInput("disabled");
+            // setAcionarLetras("disabled");
         }
 
         for (let i = 0; i < Words.length; i++) {
@@ -63,7 +65,12 @@ export default function App() {
                 let caracter = string[i].toLocaleUpperCase()
                 if (letraErrada >= 6) {
                     alert(`A Palavra Secreta é ${caracter}! \nNão foi dessa vez 🥹`)
-                    setBotaoReiniciar(true)
+                    setBotaoReiniciar(true);
+                    setHabilitarInput("disabled");
+                    setAcionarLetras("disabled");
+                    setLetraErrada(letraErrada + 6);
+                    
+                   
                 }
             }
             return string;
@@ -74,7 +81,15 @@ export default function App() {
     function inserirPalavra() {
         const palavra = [...respostaInput.split('').join(''), setRespostaInput];
         setChute(palavra);
-        setRespostaInput('')
+        setRespostaInput('');
+
+       
+        if(!respostaInput.includes(palavra)){
+            setLetraErrada(letraErrada + 6);
+            setHabilitarInput("disabled");
+            setAcionarLetras("disabled");
+            setBotaoReiniciar(true)
+        }
     }
 
     return (
