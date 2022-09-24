@@ -49,7 +49,9 @@ export default function App() {
     }
 
     function pressionarBotao(item) {
-      
+       setChute([...chute, item]);
+    
+
         if (!palavra.includes(item)) {
             setLetraErrada(letraErrada + 1);
             console.log('contando + 1')
