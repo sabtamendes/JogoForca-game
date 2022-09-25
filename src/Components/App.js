@@ -24,14 +24,16 @@ export default function App() {
     const [chute, setChute] = React.useState([...Words]);
     const [imagem, setImagem] = React.useState('');
     const [respostaInput, setRespostaInput] = React.useState('');
-    const [botaoReiniciar, setBotaoReiniciar] = React.useState(false);
+    const [botaoReiniciar, setBotaoReiniciar] = React.useState(true);
     Words.sort(embararalhar);
 
     function acionado() {
+        const habilitarBotoes = [...acionarLetras, true];
         setHabilitarLetras(habilitarLetras);
         setHabilitarInput("enabled");
-        setAcionarLetras("enabled");
+        setAcionarLetras(habilitarBotoes);
         setImagem(imagens[0]);
+        setBotaoReiniciar(habilitarBotoes);
 
         for (let i = 0; i < Words.length; i++) {
             let string = Words[i].toString().split(' ');
@@ -49,8 +51,8 @@ export default function App() {
     }
 
     function pressionarBotao(item) {
-       setChute([...chute, item]);
-    
+        setChute([...chute, item]);
+
 
         if (!palavra.includes(item)) {
             setLetraErrada(letraErrada + 1);
@@ -59,8 +61,7 @@ export default function App() {
 
         //BOTOES
         if (letraErrada >= 6) {
-           alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
-            setBotaoReiniciar(true);
+            alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
             setLetraErrada(letraErrada + 6);
@@ -68,7 +69,7 @@ export default function App() {
             console.log('entrou letra errada');
             setImagem(letraErrada + 6)
         }
-        
+
     }
     console.log('saiu')
 
@@ -82,24 +83,24 @@ export default function App() {
 
         //input palavra INCORRETA NAO ESTÁ RENDERIZANDO A PALAVRA
         if (!respostaInput.includes(palavra)) {
+            const palavraErrada = letraErrada + 6;
             setChute(palavra)
-            setLetraErrada(letraErrada + 6);
+            setLetraErrada(palavraErrada);
             console.log('palavra errada INPUT entrou')
             alert("PERDEU INPUT");
-            setBotaoReiniciar(true);
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
-            setImagem(letraErrada + 6)
+            setImagem(palavraErrada)
             //
         }
         //input palavra CORRETA
         if (respostaInput.includes(palavra)) {
-            setLetraErrada(palavra);
+            const palavraInput = palavra;
+            setLetraErrada(palavraInput);
             alert("✨ Você GANHOU! ✨ INPUT")
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
-            setBotaoReiniciar(true)
-            setChute(palavra)
+            setChute(palavraInput)
             console.log('entrou input palavra certa')
         }
         //RENDERIZAR RESPOSTA SE CORRETA
@@ -107,24 +108,35 @@ export default function App() {
             setChute(respostaInput)
             setImagem(imagens[7])
         }
-        if(palavra.includes(chute)){
+        if (palavra.includes(chute)) {
             alert('voce ganhou')
         }
     }
 
+    function reiniciarJogo() {
+        window.location.reload();
+        setHabilitarLetras("enabled");
+        setHabilitarInput("enabled");
+        setAcionarLetras("enabled");
+        setImagem(imagens[0]);
+        setBotaoReiniciar(false)
+    }
     return (
         <>
             <h1>Hangman Game</h1>
+            <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>
+            {botaoReiniciar ? <button onClick={reiniciarJogo} className="reiniciarButton">Jogar Novamente</button> : ''}
 
-            {botaoReiniciar ? <button onClick={() => window.location.reload(false)} className="reiniciarButton">Jogar Novamente</button> : <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>}
-
-            {imagem + 6 ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : '' }
+            {imagem ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : ''}
 
 
-            {palavra.split('').map((letra, i) => {
+
+            {respostaInput.includes(palavra) && !chute.includes(palavra) ? palavra.split('').map((letra, i) => {
                 return (
-                    <div className="letrasNaTela">
-                    <span  key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
+                    <div className="letrasNaTela"><span  className="letrasNaTelaVermelho" key={i}>{palavra.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
+            }) : palavra.split('').map((letra, i) => {
+                return (
+                    <div className="letrasNaTela"><span className="letrasNaTelaVerde" key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
             })}
 
             <ul>
