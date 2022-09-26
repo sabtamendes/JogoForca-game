@@ -133,7 +133,6 @@ li button.colorDisabled {
     width: 15px;
     text-align: center;
     border-bottom: 2px solid chocolate;
-    color: white;
     display: inline;
     margin:5px;
     position: relative;
@@ -141,7 +140,6 @@ li button.colorDisabled {
 }
 .letrasNaTela > span{
    margin:15px;
-
 }
 .letrasNaTelaVerde{
     width: 10px;

@@ -9,13 +9,13 @@ import imagem3 from "../assets/3.png";
 import imagem4 from "../assets/4.png";
 import imagem5 from "../assets/5.png";
 import imagem6 from "../assets/6.png";
-import gameover from "../assets/gameover.png";
+import gameover7 from "../assets/gameover.png";
 
 export default function App() {
 
     const alfabeto =
         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    const imagens = [imagem0, imagem1, imagem2, imagem3, imagem4, imagem5, imagem6, gameover];
+    const imagens = [imagem0, imagem1, imagem2, imagem3, imagem4, imagem5, imagem6, gameover7];
 
     const [habilitarInput, setHabilitarInput] = React.useState("disabled");
     const [acionarLetras, setAcionarLetras] = React.useState("disabled");
@@ -35,22 +35,23 @@ export default function App() {
         setHabilitarInput("enabled");
         setAcionarLetras(habilitarBotoes);
         setImagem(imagens[0]);
-        // setBotaoReiniciar(habilitarBotoes);
 
         for (let i = 0; i < Words.length; i++) {
             let string = Words[i].toString().split(' ');
+
             for (let i = 0; i < string.length; i++) {
                 let caracter = string[i];
-                if (caracter === chute) {
-                    alert("Você ganhou")
+                console.log("A palavra é: ", caracter)
+                let respostaDoInput = respostaInput.split("").join("").normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                if (caracter.split("").join("").normalize('NFD').replace(/[\u0300-\u036f]/g, "") === respostaDoInput) {
+
                 }
-                console.log(caracter)
-                setPalavra(caracter.split(/ +/).join('').normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
-                // setPalavra(caracter.split(" ").join(''));
+                setPalavra(caracter);
             }
             return string;
         }
     }
+
 
     function embararalhar() {
         return Math.random() - 0.5;
@@ -63,38 +64,14 @@ export default function App() {
             setLetraErrada(letraErrada + 1);
         }
         if (letraErrada >= 6) {
-            alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
+            alert(`Não foi dessa vez 🥹`);
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
             setLetraErrada(letraErrada + 6);
-            setChute(palavra)
-            console.log('entrou letra errada');
-            setImagem(letraErrada + 6)
-            setBotaoReiniciar(true)
-            setColorGreen(false)
-        }
-    }
-
-    function removerSpecials(index) {
-        console.log(index)
-        adicionarLetrasEspeciais(index)
-        let texto = index
-        texto = texto.replace(/[A]/, "ÀÁÂÃÄÅ");
-        texto = texto.replace(/[a]/, "àáâãäå");
-        texto = texto.replace(/[E]/, "EÈÉÊË");
-        texto = texto.replace(/[ÍÌÎ]/, "I");
-        texto = texto.replace(/[Ç]/, "C");
-        texto = texto.replace(/[ç]/, "c");
-        return texto.replace(/[^a-z0-9]/gi, '');
-
-    }
-    function adicionarLetrasEspeciais(index) {
-        let palavras = index;
-        for (let i = 0; i < palavras.length; i++) {
-            if (removerSpecials(palavras[i]) === palavra) {
-                console.log(`A palavra ${palavras[i]} foi encontrada`);
-                setChute(palavras[i])
-            }
+            setChute(palavra);
+            setImagem(letraErrada + 6);
+            setBotaoReiniciar(true);
+            setColorGreen(false);
         }
     }
 
@@ -105,8 +82,7 @@ export default function App() {
             const palavraErrada = letraErrada + 6;
             setChute(palavra)
             setLetraErrada(palavraErrada);
-            console.log('palavra errada INPUT entrou')
-            alert("PERDEU INPUT");
+            alert(`Não foi dessa vez 🥹`);
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
             setImagem(palavraErrada);
@@ -123,12 +99,10 @@ export default function App() {
             setColorGreen(true)
         }
         if (respostaInput.includes(palavra)) {
+            alert("✨ Você GANHOU! ✨");
             setChute(respostaInput);
-            setImagem(imagens[7])
+            setImagem(imagens[6])
             setColorGreen(true)
-        }
-        if (palavra.includes(chute)) {
-            alert('voce ganhou')
         }
     }
 
@@ -139,26 +113,14 @@ export default function App() {
         setHabilitarInput("enabled");
         setAcionarLetras(habilitarBotoes);
         setImagem(imagens[0]);
-        botaoReiniciar(true)
-        for (let i = 0; i < Words.length; i++) {
-            let string = Words[i].toString().split(' ');
-            for (let i = 0; i < string.length; i++) {
-                let caracter = string[i];
-                if (caracter === chute) {
-                    alert("Você ganhou")
-                }
-                console.log(caracter)
-                setPalavra(caracter.split(/ +/).join('').normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
-            }
-            return string;
-        }
+        botaoReiniciar(true);
     }
 
     return (
         <>
             <Header>Hangman Game</Header>
 
-            {botaoReiniciar || letraErrada >= 7 || (respostaInput === palavra && respostaInput !== palavra)
+            {(botaoReiniciar || letraErrada >= 7) && (respostaInput !== palavra || respostaInput === palavra)
                 ? <ButtonRestartGame onClick={reiniciarJogo}>Jogar Novamente</ButtonRestartGame>
                 : <ButtonWordChooser onClick={acionado}>Escolher Palavra</ButtonWordChooser>
             }
@@ -178,7 +140,7 @@ export default function App() {
                 <li>
                     {acionarLetras === "disabled"
                         ? letras.map((item, index) =>
-                            <button type="button" key={index} className="colorDisabled" disabled><p onClick={() => removerSpecials(index)}>{item}</p></button>)
+                            <button type="button" key={index} className="colorDisabled" disabled><p>{item}</p></button>)
                         : letras.map((item, index) =>
                             <button onClick={() => pressionarBotao(item, index)} type="button" key={index} className={chute.includes(item) ? "colorDisabled" : "colorEnabled"} enabled><p>{item}</p></button>)
                     }
@@ -295,3 +257,14 @@ button{
     cursor: pointer;
 }
 `
+// const LetterButtons = styled.button`
+//     width: 30px;
+//     height: 35px;
+//     border: none;
+//     border-radius: 5px;
+//     margin: 10px;
+//     color: ${props => props.colorButtons === true ? '#2E353D' : '#D2691E'};
+//     background-color: rgba(63, 60, 60, 0.604);
+//     cursor: pointer;
+
+// `
