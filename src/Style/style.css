@@ -1,3 +1,6 @@
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 *{
 	box-sizing: border-box;
@@ -6,7 +9,7 @@ body {
     background-color: #142a3e;
 }
 
-h1 {
+/* h1 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,17 +18,17 @@ h1 {
     font-family: 'Holtwood One SC', serif;
     font-size: 70px;
     text-shadow: black 0.1em 0.1em 0.2em;
-}
+} */
 
-img {
+/* img {
     margin: auto 26%;
     width: 150px;
     height: 200px;
     position: fixed;
     top:18%;
-}
+} */
 
-ul {
+/* ul {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,7 +37,7 @@ ul {
     top: 46%;
     left: 28.5%;
     bottom: 0;
-}
+} */
 
 button>p {
     font-size: 14px;
@@ -42,29 +45,30 @@ button>p {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.palavra span {
+/*FOOTER*/
+/* .palavra span {
     color: chocolate;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 5px;
     text-shadow: rgb(8, 8, 8) 0.1em 0.1em 0.2em;
     font-weight: 600;
-}
+} */
 
-.palavra {
+/* .palavra {
     display: flex;
     justify-content: center;
     position: fixed;
     top: 39vw;
     left: 16%;
     bottom: 0;
-}
+} */
 
-.palavra input {
+/* .palavra input {
     width: 50vw;
     height: 31.5px;
-}
+} */
 
-.palavra button {
+/* .palavra button {
     display: flex;
     align-items: center;
     text-align: center;
@@ -78,9 +82,10 @@ button>p {
     width: 50px;
     height: 31.5px;
     cursor: pointer;
-}
+} */
 
-.palavra-button button {
+/*Botao Escolher Nova Palavra*/
+/* .palavra-button button {
     display: flex;
     justify-content: center;
     border: none;
@@ -92,32 +97,28 @@ button>p {
     background-color: chocolate;
     padding: 5px;
     cursor: pointer;
-}
+} */
 
-li>button.colorEnabled {
+li button.colorEnabled {
     width: 30px;
     height: 35px;
     border: none;
     border-radius: 5px;
     margin: 10px;
-    border-color: chocolate;
+    color: white;
     background-color: chocolate;
     cursor: pointer;
-    color: white;
 }
 
-li>button.colorDisabled {
+li button.colorDisabled {
     width: 30px;
     height: 35px;
     border: none;
-    background-color: rgba(63, 60, 60, 0.604);
     border-radius: 5px;
     margin: 10px;
+    color: white;
+    background-color: rgba(63, 60, 60, 0.604);
     cursor: pointer;
-}
-
-.escondido {
-    visibility: hidden;
 }
 
 .Disabled {
@@ -164,7 +165,10 @@ li>button.colorDisabled {
     margin-right: 5px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.reiniciarButton{
+.colorBlue{
+    color:blue;
+}
+/* .reiniciarButton{
     display: flex;
     justify-content: center;
     border: none;
@@ -177,4 +181,4 @@ li>button.colorDisabled {
     padding: 5px;
     cursor: pointer;
     margin-bottom: 13%;
-}
+}  */

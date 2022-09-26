@@ -1,5 +1,6 @@
 import React from "react";
 import Words from "./Words";
+import styled from "styled-components";
 
 import imagem0 from "../assets/0.png";
 import imagem1 from "../assets/1.png";
@@ -18,27 +19,30 @@ export default function App() {
 
     const [habilitarInput, setHabilitarInput] = React.useState("disabled");
     const [acionarLetras, setAcionarLetras] = React.useState("disabled");
-    const [habilitarLetras, setHabilitarLetras] = React.useState([...alfabeto]);
+    const [letras, setLetras] = React.useState([...alfabeto]);
     const [palavra, setPalavra] = React.useState("");
     const [letraErrada, setLetraErrada] = React.useState(0);
-    const [chute, setChute] = React.useState([...Words]);
+    const [chute, setChute] = React.useState([...Words], 0);
     const [imagem, setImagem] = React.useState('');
     const [respostaInput, setRespostaInput] = React.useState('');
-    const [botaoReiniciar, setBotaoReiniciar] = React.useState(true);
+    const [botaoReiniciar, setBotaoReiniciar] = React.useState(false);
     Words.sort(embararalhar);
 
     function acionado() {
         const habilitarBotoes = [...acionarLetras, true];
-        setHabilitarLetras(habilitarLetras);
+        setLetras(letras);
         setHabilitarInput("enabled");
         setAcionarLetras(habilitarBotoes);
         setImagem(imagens[0]);
-        setBotaoReiniciar(habilitarBotoes);
+        // setBotaoReiniciar(habilitarBotoes);
 
         for (let i = 0; i < Words.length; i++) {
             let string = Words[i].toString().split(' ');
             for (let i = 0; i < string.length; i++) {
                 let caracter = string[i];
+                if (caracter === chute) {
+                    alert("Você ganhou")
+                }
                 console.log(caracter)
                 setPalavra(caracter.split(/ +/).join('').normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
             }
@@ -53,13 +57,9 @@ export default function App() {
     function pressionarBotao(item) {
         setChute([...chute, item]);
 
-
         if (!palavra.includes(item)) {
             setLetraErrada(letraErrada + 1);
-            console.log('contando + 1')
         }
-
-        //BOTOES
         if (letraErrada >= 6) {
             alert(`A Palavra Secreta! ${palavra.toLocaleUpperCase()}\nNão foi dessa vez 🥹 BOTAO`);
             setHabilitarInput("disabled");
@@ -68,20 +68,28 @@ export default function App() {
             setChute(palavra)
             console.log('entrou letra errada');
             setImagem(letraErrada + 6)
+            setBotaoReiniciar(true)
         }
-
     }
-    console.log('saiu')
 
+    function removerSpecials(texto) {
+        texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
+        texto = texto.replace(/[àáâãäå]/, "a");
+        texto = texto.replace(/[ÈÉÊË]/, "E");
+        texto = texto.replace(/[ÍÌÎ]/, "I");
+        texto = texto.replace(/[Ç]/, "C");
+        texto = texto.replace(/[ç]/, "c");
+        return texto.replace(/[^a-z0-9]/gi, '');
+    }
+    let palavras = Words;
+    for (let i = 0; i < palavras.length; i++) {
+        if (removerSpecials(palavras[i]) === letras) {
+            console.log(`A palavra ${palavras[i]} foi encontrada`);
+        }
+    }
     function inserirPalavra() {
-        //const palavra = [...respostaInput.split('').join(''), setRespostaInput];
-        //setChute(palavra);
-        console.log('entrou aqui')
-        // setHabilitarInput("disabled");
-        // setAcionarLetras("disabled");
         setRespostaInput('');
 
-        //input palavra INCORRETA NAO ESTÁ RENDERIZANDO A PALAVRA
         if (!respostaInput.includes(palavra)) {
             const palavraErrada = letraErrada + 6;
             setChute(palavra)
@@ -90,22 +98,19 @@ export default function App() {
             alert("PERDEU INPUT");
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
-            setImagem(palavraErrada)
-            //
+            setImagem(palavraErrada);
         }
-        //input palavra CORRETA
         if (respostaInput.includes(palavra)) {
+            alert("✨ Você GANHOU! ✨");
             const palavraInput = palavra;
+            setChute(palavraInput);
             setLetraErrada(palavraInput);
-            alert("✨ Você GANHOU! ✨ INPUT")
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
-            setChute(palavraInput)
-            console.log('entrou input palavra certa')
+            setBotaoReiniciar(true);
         }
-        //RENDERIZAR RESPOSTA SE CORRETA
         if (respostaInput.includes(palavra)) {
-            setChute(respostaInput)
+            setChute(respostaInput);
             setImagem(imagens[7])
         }
         if (palavra.includes(chute)) {
@@ -114,48 +119,164 @@ export default function App() {
     }
 
     function reiniciarJogo() {
-        window.location.reload();
-        setHabilitarLetras("enabled");
+        window.location.reload()
+        const habilitarBotoes = [...acionarLetras, true];
+        setLetras(letras);
         setHabilitarInput("enabled");
-        setAcionarLetras("enabled");
+        setAcionarLetras(habilitarBotoes);
         setImagem(imagens[0]);
-        setBotaoReiniciar(false)
+        botaoReiniciar(true)
+        for (let i = 0; i < Words.length; i++) {
+            let string = Words[i].toString().split(' ');
+            for (let i = 0; i < string.length; i++) {
+                let caracter = string[i];
+                if (caracter === chute) {
+                    alert("Você ganhou")
+                }
+                console.log(caracter)
+                setPalavra(caracter.split(/ +/).join('').normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
+            }
+            return string;
+        }
     }
+
     return (
         <>
-            <h1>Hangman Game</h1>
-            <span className="palavra-button"><button onClick={acionado}>Escolher Palavra</button></span>
-            {botaoReiniciar ? <button onClick={reiniciarJogo} className="reiniciarButton">Jogar Novamente</button> : ''}
+            <Header>Hangman Game</Header>
 
-            {imagem ? <img src={imagens[letraErrada]} alt="texto alternativo" /> : ''}
+            {botaoReiniciar || letraErrada >= 7 || (respostaInput === palavra && respostaInput !== palavra)
+                ? <ButtonRestartGame onClick={reiniciarJogo}>Jogar Novamente</ButtonRestartGame>
+                : <ButtonWordChooser onClick={acionado}>Escolher Palavra</ButtonWordChooser>
+            }
 
+            {imagem ? <Image src={imagens[letraErrada]} alt="texto alternativo" /> : <Image src={imagens[0]} alt="texto alternativo" />}
 
-
-            {respostaInput.includes(palavra) && !chute.includes(palavra) ? palavra.split('').map((letra, i) => {
+            {respostaInput.includes(palavra) ? palavra.split('').map((letra, i) => {
                 return (
-                    <div className="letrasNaTela"><span  className="letrasNaTelaVermelho" key={i}>{palavra.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
+                    <div className="letrasNaTela" ><span className='letrasNaTelaVermelho' key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
             }) : palavra.split('').map((letra, i) => {
                 return (
-                    <div className="letrasNaTela"><span className="letrasNaTelaVerde" key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
+                    <div className="letrasNaTela"><span className='letrasNaTelaVerde' key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
             })}
 
-            <ul>
+            <List>
                 <li>
                     {acionarLetras === "disabled"
-                        ? habilitarLetras.map((item, index) =>
+                        ? letras.map((item, index) =>
                             <button type="button" key={index} className="colorDisabled" disabled><p>{item}</p></button>)
-                        : habilitarLetras.map((item, index) =>
+                        : letras.map((item, index) =>
                             <button onClick={() => pressionarBotao(item, index)} type="button" key={index} className={chute.includes(item) ? "colorDisabled" : "colorEnabled"} enabled><p>{item}</p></button>)
                     }
                 </li>
+            </List>
 
-            </ul>
-            <div className="palavra"> <span>Já sei a palavra!</span>
+            <Footer> <span>Já sei a palavra!</span>
                 {
                     habilitarInput === "disabled"
                         ? <input type="text" className="Disabled" disabled></input>
                         : <input onChange={(e) => setRespostaInput(e.target.value)} value={respostaInput} type="text" className="Enabled" enabled></input>
-                } <button onClick={inserirPalavra}>Chutar</button></div>
+                } <button onClick={inserirPalavra}>Chutar</button>
+            </Footer>
         </>
     )
 }
+
+const Header = styled.h1`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    color: chocolate;
+    font-family: 'Holtwood One SC', serif;
+    font-size: 70px;
+    text-shadow: black 0.1em 0.1em 0.2em;
+`
+const ButtonWordChooser = styled.button`
+    display: flex;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    margin-top: 2%;
+    margin-left: 65%;
+    margin-bottom: 13%;
+    font-size: 15px;
+    background-color: chocolate;
+    padding: 5px;
+    cursor: pointer;
+`
+const ButtonRestartGame = styled.button`
+    display: flex;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    margin-top: 2%;
+    margin-left: 65%;
+    font-size: 15px;
+    background-color: rgb(41, 80, 157);
+    padding: 5px;
+    cursor: pointer;
+    margin-bottom: 13%;
+`
+const Image = styled.img`
+    margin: auto 26%;
+    width: 150px;
+    height: 200px;
+    position: fixed;
+    top:18%;
+`
+const List = styled.ul`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    position: fixed;
+    top: 46%;
+    left: 28.5%;
+    bottom: 0;
+/* button{
+    width: 30px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+    color: white;
+    background-color: chocolate;
+    cursor: pointer;
+} */
+`
+const Footer = styled.div`
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 39vw;
+    left: 16%;
+    bottom: 0;
+span{
+    color: chocolate;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 5px;
+    text-shadow: rgb(8, 8, 8) 0.1em 0.1em 0.2em;
+    font-weight: 600;
+}
+input{
+    width: 50vw;
+    height: 31.5px;
+}
+button{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: chocolate;
+    border-color: chocolate;
+    padding: 5px;
+    border-radius: 2px;
+    color: white;
+    margin-left: 5px;
+    width: 50px;
+    height: 31.5px;
+    cursor: pointer;
+}
+`
