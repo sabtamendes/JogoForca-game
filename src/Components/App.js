@@ -26,6 +26,7 @@ export default function App() {
     const [imagem, setImagem] = React.useState('');
     const [respostaInput, setRespostaInput] = React.useState('');
     const [botaoReiniciar, setBotaoReiniciar] = React.useState(false);
+    const [colorGreen, setColorGreen] = React.useState(false);
     Words.sort(embararalhar);
 
     function acionado() {
@@ -45,6 +46,7 @@ export default function App() {
                 }
                 console.log(caracter)
                 setPalavra(caracter.split(/ +/).join('').normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
+                // setPalavra(caracter.split(" ").join(''));
             }
             return string;
         }
@@ -69,24 +71,33 @@ export default function App() {
             console.log('entrou letra errada');
             setImagem(letraErrada + 6)
             setBotaoReiniciar(true)
+            setColorGreen(false)
         }
     }
 
-    function removerSpecials(texto) {
-        texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
-        texto = texto.replace(/[àáâãäå]/, "a");
-        texto = texto.replace(/[ÈÉÊË]/, "E");
+    function removerSpecials(index) {
+        console.log(index)
+        adicionarLetrasEspeciais(index)
+        let texto = index
+        texto = texto.replace(/[A]/, "ÀÁÂÃÄÅ");
+        texto = texto.replace(/[a]/, "àáâãäå");
+        texto = texto.replace(/[E]/, "EÈÉÊË");
         texto = texto.replace(/[ÍÌÎ]/, "I");
         texto = texto.replace(/[Ç]/, "C");
         texto = texto.replace(/[ç]/, "c");
         return texto.replace(/[^a-z0-9]/gi, '');
+
     }
-    let palavras = Words;
-    for (let i = 0; i < palavras.length; i++) {
-        if (removerSpecials(palavras[i]) === letras) {
-            console.log(`A palavra ${palavras[i]} foi encontrada`);
+    function adicionarLetrasEspeciais(index) {
+        let palavras = index;
+        for (let i = 0; i < palavras.length; i++) {
+            if (removerSpecials(palavras[i]) === palavra) {
+                console.log(`A palavra ${palavras[i]} foi encontrada`);
+                setChute(palavras[i])
+            }
         }
     }
+
     function inserirPalavra() {
         setRespostaInput('');
 
@@ -99,6 +110,7 @@ export default function App() {
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
             setImagem(palavraErrada);
+            setColorGreen(false)
         }
         if (respostaInput.includes(palavra)) {
             alert("✨ Você GANHOU! ✨");
@@ -108,10 +120,12 @@ export default function App() {
             setHabilitarInput("disabled");
             setAcionarLetras("disabled");
             setBotaoReiniciar(true);
+            setColorGreen(true)
         }
         if (respostaInput.includes(palavra)) {
             setChute(respostaInput);
             setImagem(imagens[7])
+            setColorGreen(true)
         }
         if (palavra.includes(chute)) {
             alert('voce ganhou')
@@ -151,19 +165,20 @@ export default function App() {
 
             {imagem ? <Image src={imagens[letraErrada]} alt="texto alternativo" /> : <Image src={imagens[0]} alt="texto alternativo" />}
 
-            {respostaInput.includes(palavra) ? palavra.split('').map((letra, i) => {
+            {palavra.split('').map((letra, i) => {
                 return (
-                    <div className="letrasNaTela" ><span className='letrasNaTelaVermelho' key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
-            }) : palavra.split('').map((letra, i) => {
-                return (
-                    <div className="letrasNaTela"><span className='letrasNaTelaVerde' key={i}>{chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span></div>)
+                    <div className="letrasNaTela">
+                        <span className={colorGreen ? 'letrasNaTelaVerde' : 'letrasNaTelaVermelho'} key={i}>
+                            {chute.includes(letra) ? letra.toLocaleUpperCase() : ''}</span>
+                    </div>
+                )
             })}
 
             <List>
                 <li>
                     {acionarLetras === "disabled"
                         ? letras.map((item, index) =>
-                            <button type="button" key={index} className="colorDisabled" disabled><p>{item}</p></button>)
+                            <button type="button" key={index} className="colorDisabled" disabled><p onClick={() => removerSpecials(index)}>{item}</p></button>)
                         : letras.map((item, index) =>
                             <button onClick={() => pressionarBotao(item, index)} type="button" key={index} className={chute.includes(item) ? "colorDisabled" : "colorEnabled"} enabled><p>{item}</p></button>)
                     }
